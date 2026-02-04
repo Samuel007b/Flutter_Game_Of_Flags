@@ -1,2 +1,2 @@
 # Flutter_Game_Of_Flags
-A quiz game using Flutter.
+My third Flutter + Dart project and my first game.
