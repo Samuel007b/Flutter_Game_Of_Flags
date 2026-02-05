@@ -26,8 +26,28 @@ class _HistoricScreenState extends State<HistoricScreen> {
       if (cmp != 0) return cmp;
       cmp = b.getTotal().compareTo(a.getTotal());
       if (cmp != 0) return cmp;
+      if (a.withTime != b.withTime) {
+        return a.withTime ? -1 : 1;
+      }
+      if (a.withTime && b.withTime) {
+        cmp = a.getTime().compareTo(b.getTime()); // menor primeiro
+        if (cmp != 0) return cmp;
+      }
       return b.getMoment().compareTo(a.getMoment());
     });
+  }
+  String getFinalTime(int time){
+    if(time<60){
+      return "${time}s";
+    }
+    else{
+      if(time%60==0){
+        return "${time/60}min";
+      }
+      else{
+        return "${(time-time%60)/60}min ${time%60}s";
+      }
+    }
   }
   @override
   Widget build(BuildContext context) {
@@ -73,14 +93,59 @@ class _HistoricScreenState extends State<HistoricScreen> {
             ],
           ),
           body: historic.isEmpty? Center(child: Text("Nenhum jogo realizado", style: GoogleFonts.pixelifySans(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black)))
-          : ListView.builder(padding: const EdgeInsets.only(top: 20), itemCount: sortedHistoric.length, itemBuilder: (context, index){
-            return Card(
-                margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                child: ListTile(
-                  leading: CircleAvatar(child: Text("${index+1}")),
-                  title: Text("${DateFormat('dd/MM/yyyy HH:mm').format(sortedHistoric[index].getMoment())}\nAproveitamento: ${(sortedHistoric[index].getUtilization()*100).toStringAsFixed(1).replaceAll('.', ',')}% (${sortedHistoric[index].getPoints()}/${sortedHistoric[index].getTotal()})", style: GoogleFonts.alumniSansPinstripe(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black))
-                )
-              );
+          : ListView.builder(padding: const EdgeInsets.only(top: 20), itemCount: sortedHistoric.length, itemBuilder: (context, index){ return sortedHistoric[index].withTime ?
+            Card(
+              margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+              child: ListTile(
+                leading: CircleAvatar(backgroundColor: Colors.orange, child: Text("${index + 1}", style: TextStyle(color: Colors.white))),
+                title: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            "${DateFormat('dd/MM/yyyy HH:mm').format(sortedHistoric[index].getMoment())}    Tempo: ${getFinalTime(sortedHistoric[index].getTime())}",
+                            style: GoogleFonts.alumniSansPinstripe(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
+                          ),
+                        ),
+                        Icon(Icons.timer, size: 30, color: Colors.black),
+                      ],
+                    ),
+                    const SizedBox(height: 4),
+                    Text("Aproveitamento: ${(sortedHistoric[index].getUtilization() * 100).toStringAsFixed(1).replaceAll('.', ',')}% (${sortedHistoric[index].getPoints()}/${sortedHistoric[index].getTotal()})",
+                      style: GoogleFonts.alumniSansPinstripe(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
+                    ),
+                  ],
+                ),
+              ),
+            ) :
+            Card(
+              margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+              child: ListTile(
+                leading: CircleAvatar(backgroundColor: Colors.orange, child: Text("${index + 1}", style: TextStyle(color: Colors.white))),
+                title: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            DateFormat('dd/MM/yyyy HH:mm').format(sortedHistoric[index].getMoment()),
+                            style: GoogleFonts.alumniSansPinstripe(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
+                          ),
+                        ),
+                        Icon(Icons.timer_off, size: 30, color: Colors.grey),
+                      ],
+                    ),
+                    const SizedBox(height: 4),
+                    Text("Aproveitamento: ${(sortedHistoric[index].getUtilization() * 100).toStringAsFixed(1).replaceAll('.', ',')}% (${sortedHistoric[index].getPoints()}/${sortedHistoric[index].getTotal()})",
+                      style: GoogleFonts.alumniSansPinstripe(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
+                    ),
+                  ],
+                ),
+              ),
+            );
           }),
         ),
       ),

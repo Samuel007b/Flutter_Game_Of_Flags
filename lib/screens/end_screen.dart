@@ -8,8 +8,9 @@ import 'package:page_transition/page_transition.dart';
 import 'package:audioplayers/audioplayers.dart';
 
 class EndScreen extends StatelessWidget {
-  const EndScreen({super.key, required this.total, required this.points, required this.historic, required this.selected});
-  final int total, points;
+  const EndScreen({super.key, required this.total, required this.points, required this.historic, required this.selected, required this.withTime, required this.time});
+  final int total, points, time;
+  final bool withTime;
   final List<Round> historic;
   final List<Country> selected;
   @override
@@ -17,7 +18,7 @@ class EndScreen extends StatelessWidget {
     final player = AudioPlayer();
     List<Round> history = List<Round>.from(historic);
     double note = points/total;
-    Round r = Round(total: total, points: points, utilization: note, moment: DateTime.now());
+    Round r = Round(total: total, points: points, utilization: note, moment: DateTime.now(), withTime: withTime, time: time);
     history.add(r);
     HistoricStorage.saveHistoric(history);
     Row showRow(int a){
