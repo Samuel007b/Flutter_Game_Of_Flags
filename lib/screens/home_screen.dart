@@ -24,6 +24,7 @@ class _HomeScreenState extends State<HomeScreen>{
   final ValueNotifier<String> dropValue = ValueNotifier("");
   final List<String> dropOptions = ["10", "15", "20", "25", "30"];
   List<Round> historic = [];
+  final ValueNotifier<bool> withTimeValue = ValueNotifier<bool>(false);
   @override
   void initState() {
     super.initState();
@@ -53,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen>{
             mainAxisSize: MainAxisSize.min,
             children: [
               Text("Quantidade de rodadas:", style: GoogleFonts.pixelifySans(fontSize: 24, fontWeight: FontWeight.normal)),
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
               ValueListenableBuilder(
                 valueListenable: dropValue,
                 builder: (context, String value, _) {
@@ -76,7 +77,20 @@ class _HomeScreenState extends State<HomeScreen>{
                   );
                 },
               ),
-              const SizedBox(height: 25),
+              const SizedBox(height: 15),
+              ValueListenableBuilder<bool>(
+                valueListenable: withTimeValue,
+                builder: (context, withTime, _) {
+                  return SwitchListTile(
+                    title: Text("Cronômetro", style: GoogleFonts.pixelifySans(fontSize: 20, color: Colors.black)),
+                    secondary: Icon(Icons.timer),
+                    value: withTime,
+                    activeThumbColor: Colors.blueAccent,
+                    onChanged: (value) => withTimeValue.value = value,
+                  );
+                },
+              ),
+              const SizedBox(height: 15),
               SizedBox(
                 width: 300,
                 child: ElevatedButton(
@@ -108,6 +122,8 @@ class _HomeScreenState extends State<HomeScreen>{
                           hits: 0,
                           chosen: [],
                           historic: historic,
+                          withTime: withTimeValue.value,
+                          time: 0,
                         ),
                       ),
                     );
@@ -115,6 +131,7 @@ class _HomeScreenState extends State<HomeScreen>{
                   child: Text("START", style: GoogleFonts.pixelifySans(fontSize: 30, color: Colors.white)),
                 ),
               ),
+              const SizedBox(height: 15),
             ],
           ),
         );
