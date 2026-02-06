@@ -45,7 +45,7 @@ class _HistoricScreenState extends State<HistoricScreen> {
         return "${time/60}min";
       }
       else{
-        return "${(time-time%60)/60}min ${time%60}s";
+        return "${((time-time%60)/60).toStringAsFixed(0)}min ${time%60}s";
       }
     }
   }
@@ -106,7 +106,7 @@ class _HistoricScreenState extends State<HistoricScreen> {
                         Expanded(
                           child: Text(
                             "${DateFormat('dd/MM/yyyy HH:mm').format(sortedHistoric[index].getMoment())}    Tempo: ${getFinalTime(sortedHistoric[index].getTime())}",
-                            style: GoogleFonts.alumniSansPinstripe(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
+                            style: GoogleFonts.alumniSansPinstripe(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
                           ),
                         ),
                         Icon(Icons.timer, size: 30, color: Colors.black),
@@ -114,7 +114,7 @@ class _HistoricScreenState extends State<HistoricScreen> {
                     ),
                     const SizedBox(height: 4),
                     Text("Aproveitamento: ${(sortedHistoric[index].getUtilization() * 100).toStringAsFixed(1).replaceAll('.', ',')}% (${sortedHistoric[index].getPoints()}/${sortedHistoric[index].getTotal()})",
-                      style: GoogleFonts.alumniSansPinstripe(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
+                      style: GoogleFonts.alumniSansPinstripe(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
                     ),
                   ],
                 ),
@@ -132,7 +132,7 @@ class _HistoricScreenState extends State<HistoricScreen> {
                         Expanded(
                           child: Text(
                             DateFormat('dd/MM/yyyy HH:mm').format(sortedHistoric[index].getMoment()),
-                            style: GoogleFonts.alumniSansPinstripe(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
+                            style: GoogleFonts.alumniSansPinstripe(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
                           ),
                         ),
                         Icon(Icons.timer_off, size: 30, color: Colors.grey),
@@ -140,7 +140,7 @@ class _HistoricScreenState extends State<HistoricScreen> {
                     ),
                     const SizedBox(height: 4),
                     Text("Aproveitamento: ${(sortedHistoric[index].getUtilization() * 100).toStringAsFixed(1).replaceAll('.', ',')}% (${sortedHistoric[index].getPoints()}/${sortedHistoric[index].getTotal()})",
-                      style: GoogleFonts.alumniSansPinstripe(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
+                      style: GoogleFonts.alumniSansPinstripe(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
                     ),
                   ],
                 ),
